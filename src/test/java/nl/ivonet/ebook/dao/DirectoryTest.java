@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 by Ivo Wolring (http://ivonet.nl)
+ * Copyright (c) 2013 by Ivo Woltring (http://ivonet.nl)
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,28 +14,28 @@
  *   limitations under the License.
  */
 
-package nl.ivonet.ebook.model;
+package nl.ivonet.ebook.dao;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
  * @author Ivo Woltring
  */
+public class DirectoryTest {
+    private String dir;
+    private Directory directory;
 
-//@XmlAccessorType(XmlAccessType.FIELD)
-//@XmlType(name = "", propOrder = {
-//    "title"
-//})
-
-//@XmlRootElement(name = "Epub", namespace = "http://things.ivonet.nl")
-public class Epub {
-    //    @XmlElement(namespace = "http://things.ivonet.nl")
-    private String title;
-
-    public void setTitle(final String title) {
-        this.title = title;
+    @Before
+    public void setUp() throws Exception {
+        this.dir = "/Volumes/Data/Books/ebook/IvoNetLibrary/";
+        this.directory = new Directory();
     }
 
-    public String getTitle() {
-        return title;
+    @Test
+    public void testFolders() throws Exception {
+        final Folders folders = this.directory.folders(this.dir);
+        System.out.println("folders = " + folders);
     }
 }

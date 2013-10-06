@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 by Ivo Wolring (http://ivonet.nl)
+ * Copyright (c) 2013 by Ivo Woltring (http://ivonet.nl)
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -24,22 +24,22 @@ function CtrlEbooks($scope, $http) {
     $scope.debug = false;
 
     $http.get('service/ebook').success(function (data) {
-        $scope.epub = data;
+        $scope.folders = data;
     });
 
-
-//    $scope.showToDos = function (category) {
-//
-//        if (!category || !category.todos) {
-//            $scope.todos = []
-//        } else {
-//            $scope.todos = category.todos.todo;
-//        }
-//    };
-//
     $scope.toggleDebug = function () {
         $scope.debug = !$scope.debug;
     };
+
+    $scope.showFolder = function (category) {
+
+        if (!category || !category.todos) {
+            $scope.todos = []
+        } else {
+            $scope.todos = category.todos.todo;
+        }
+    };
+
 
 //    $scope.tagById = function (ids) {
 //        tags = $scope.things.tags.tag;

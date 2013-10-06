@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 by Ivo Wolring (http://ivonet.nl)
+ * Copyright (c) 2013 by Ivo Woltring (http://ivonet.nl)
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,10 +16,13 @@
 
 package nl.ivonet.ebook.controler;
 
-import nl.ivonet.ebook.model.Epub;
+import nl.ivonet.ebook.dao.Directory;
+import nl.ivonet.ebook.dao.Folders;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -29,14 +32,26 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/ebook")
 public class Ebook {
+    //TODO move this to a property file
+    private static final String PATH = "/Volumes/Data/Books/ebook/IvoNetLibrary/";
+    @Inject Directory directory;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Epub get() {
-        System.out.println("Hello World..!!.");
-        final Epub epub = new Epub();
-        epub.setTitle("Hello World");
-        return epub;
+    public Folders get() {
+        final Folders folders = this.directory.folders(PATH);
+        System.out.println(folders);
+        return folders;
+    }
+
+    @Path("{folder}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Folders getFolderContent(@PathParam("folder") final String path) {
+        final Folders folders = this.directory.folders(PATH + path);
+        System.out.println(folders);
+        return folders;
+
     }
 
 }
