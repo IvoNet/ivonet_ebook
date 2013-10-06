@@ -1,0 +1,68 @@
+<!--
+  ~ Copyright (c) 2013 by Ivo Wolring (http://ivonet.nl)
+  ~
+  ~   Licensed under the Apache License, Version 2.0 (the "License");
+  ~   you may not use this file except in compliance with the License.
+  ~   You may obtain a copy of the License at
+  ~
+  ~          http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~   Unless required by applicable law or agreed to in writing, software
+  ~   distributed under the License is distributed on an "AS IS" BASIS,
+  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~   limitations under the License.
+  -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="#">E-Books</a>
+
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">
+                    <button class="btn btn-mini btn-inverse" type="button" data-toggle="button"
+                            ng-click="toggleDebug()">Debug
+                    </button>
+                </p>
+                <ul class="nav">
+                    <!--<li class="active"><a href="">Home</a></li>-->
+                    <!--<li><a href="#">About</a></li>-->
+                    <li><a href="http://www.ivonet.nl/home/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3">
+            <!--Sidebar content-->
+            <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li class="nav-header">Collect</li>
+                    <!--<li><a href="" ng-click="showToDos(things.inbox)">Inbox</a></li>-->
+                    <!--<li><a href="" ng-click="showToDos(things.inbox)">Inbox</a></li>-->
+                    <!--<li class="nav-header">Focus</li>-->
+                    <!--<li class="nav-header">Focus</li>-->
+                    <!--<li><a href="" ng-click="showToDos(things.today)">Today</a></li>-->
+                    <!--<li><a href="" ng-click="showToDos(things.next)">Next</a></li>-->
+                    <!--<li><a href="" ng-click="showToDos(things.scheduled)">Scheduled</a></li>-->
+                    <!--<li><a href="" ng-click="showToDos(things.someday)">Someday</a></li>-->
+                    <!--<li class="nav-header">Active Projects</li>-->
+                    <!--<li ng-repeat="project in things.projects.project">-->
+                    <!--<a href="" ng-click="showToDos(project)"> {{ project.name }}</a></li>-->
+                    <!--<li class="nav-header">Areas</li>-->
+                    <!--<li ng-repeat="area in things.areas.area"><a href="" ng-click="showToDos(area)">{{ area.name }}</a>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+        </div>
+        <div class="span9">
+            <div class="hero-unit">
+                <div ng-model="epub.title">{{ epub.title }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<pre ng-model="debug" ng-show="debug">{{ epub | json }}</pre>
