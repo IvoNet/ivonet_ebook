@@ -19,6 +19,7 @@ package nl.ivonet.ebook.controler;
 import nl.ivonet.ebook.dao.Directory;
 import nl.ivonet.ebook.dao.Folders;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -31,6 +32,7 @@ import javax.ws.rs.core.MediaType;
  * @author Ivo Woltring
  */
 @Path("/ebook")
+@RequestScoped
 public class Ebook {
     //TODO move this to a property file
     private static final String PATH = "/Volumes/Data/Books/ebook/IvoNetLibrary/";
@@ -40,7 +42,7 @@ public class Ebook {
     @Produces(MediaType.APPLICATION_JSON)
     public Folders get() {
         final Folders folders = this.directory.folders(PATH);
-        System.out.println(folders);
+        System.out.println("!!!!!!!!!!!!" + folders); //TODO Remove me
         return folders;
     }
 
@@ -49,7 +51,7 @@ public class Ebook {
     @Produces(MediaType.APPLICATION_JSON)
     public Folders getFolderContent(@PathParam("folder") final String path) {
         final Folders folders = this.directory.folders(PATH + path);
-        System.out.println(folders);
+        System.out.println("!!!!!!!!!!!!" + folders); //TODO Remove me
         return folders;
 
     }

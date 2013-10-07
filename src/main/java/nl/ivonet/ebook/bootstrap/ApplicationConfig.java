@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 by Ivo Wolring (http://ivonet.nl)
+ * Copyright (c) 2013 by Ivo Woltring (http://ivonet.nl)
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -16,36 +16,40 @@
 
 package nl.ivonet.ebook.bootstrap;
 
+import nl.ivonet.ebook.controler.Ebook;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import java.util.Set;
 
 /**
  *
  * @author Ivo Woltring
  */
-@SuppressWarnings("EmptyClass")
 @ApplicationPath("service")
 public class ApplicationConfig extends Application {
-//    @Override
-//    public Set<Class<?>> getClasses() {
-//        Set<Class<?>> resources = new java.util.HashSet<>();
-//        // following code can be used to customize Jersey 2.0 JSON provider:
-//        try {
-//            Class jsonProvider = Class.forName("org.glassfish.jersey.jackson.JacksonFeature");
-//            // Class jsonProvider = Class.forName("org.glassfish.jersey.moxy.json.MoxyJsonFeature");
-//            // Class jsonProvider = Class.forName("org.glassfish.jersey.jettison.JettisonFeature");
-//            resources.add(jsonProvider);
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        addRestResourceClasses(resources);
-//        return resources;
-//
-//        return super.getClasses();
-//    }
-//
-//    private void addRestResourceClasses(final Set<Class<?>> resources) {
-//        resources.add(xxx.class);
-//
-//    }
+
+    @Override
+    public Set<Class<?>> getClasses() {
+        final Set<Class<?>> resources = new java.util.HashSet<>();
+        // following code can be used to customize Jersey 2.0 JSON provider:
+        try {
+            final Class jsonProvider = Class.forName("org.glassfish.jersey.jackson.JacksonFeature");
+            // Class jsonProvider = Class.forName("org.glassfish.jersey.moxy.json.MoxyJsonFeature");
+            // Class jsonProvider = Class.forName("org.glassfish.jersey.jettison.JettisonFeature");
+            resources.add(jsonProvider);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        addRestResourceClasses(resources);
+        return resources;
+    }
+
+    /*
+    Add your own resources here.
+     */
+    private void addRestResourceClasses(final Set<Class<?>> resources) {
+        resources.add(Ebook.class);
+    }
+
 }

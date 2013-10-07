@@ -16,8 +16,6 @@
 
 package nl.ivonet.ebook.dao;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,11 +24,9 @@ import java.util.List;
  *
  * @author Ivo Woltring
  */
-@XmlRootElement(name = "folders", namespace = "http://ebook.ivonet.nl")
+@SuppressWarnings("UnusedDeclaration")
 public class Folders implements Iterable<String> {
-    @XmlElement(name = "folders", namespace = "http://ebook.ivonet.nl", required = true)
     private final List<String> folders;
-    @XmlElement(name = "path", namespace = "http://ebook.ivonet.nl", required = true)
     private String path;
 
     public Folders() {
@@ -41,8 +37,12 @@ public class Folders implements Iterable<String> {
         this.folders.add(name);
     }
 
+    public List<String> getFolders() {
+        return this.folders;
+    }
+
     public String getPath() {
-        return path;
+        return this.path;
     }
 
     public void setPath(final String path) {
@@ -57,7 +57,7 @@ public class Folders implements Iterable<String> {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Folders{");
-        sb.append("folders=").append(folders);
+        sb.append("folders=").append(this.folders);
         sb.append('}');
         return sb.toString();
     }
