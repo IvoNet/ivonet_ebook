@@ -35,7 +35,15 @@ function CtrlEbooks($scope, $http) {
         if (!category) {
             $scope.folders = []
         } else {
-            $scope.path = 'service/ebook/' + $scope.folders.path + "+" + category;
+            if (category == "..") {
+                pth = $scope.folders.path.split("+");
+                pth.pop();
+                $scope.path = 'service/ebook/' + pth.join("+");
+            } else if (category == "/") {
+                $scope.path = 'service/ebook/';
+            } else {
+                $scope.path = 'service/ebook/' + $scope.folders.path + "+" + category;
+            }
             $http.get($scope.path).success(function (data) {
                 $scope.folders = data;
             });

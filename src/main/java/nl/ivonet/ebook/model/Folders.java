@@ -31,6 +31,10 @@ public class Folders {
     public Folders(final String path) {
         this.folders = new ArrayList<>();
         this.path = path;
+        if (path != null && !path.isEmpty()) {
+            folders.add("/");
+            folders.add("..");
+        }
     }
 
     public void add(final String name) {
@@ -42,7 +46,7 @@ public class Folders {
     }
 
     public String getPath() {
-        return this.path;
+        return this.path.replace("/", "+");
     }
 
     public void setPath(final String path) {
