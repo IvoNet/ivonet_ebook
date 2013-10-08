@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package nl.ivonet.ebook.dao;
+package nl.ivonet.ebook.model;
 
 import java.util.ArrayList;
 import java.util.List;

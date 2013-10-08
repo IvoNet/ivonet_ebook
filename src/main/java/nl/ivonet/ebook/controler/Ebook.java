@@ -17,7 +17,7 @@
 package nl.ivonet.ebook.controler;
 
 import nl.ivonet.ebook.dao.Directory;
-import nl.ivonet.ebook.dao.Folders;
+import nl.ivonet.ebook.model.Folders;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -28,7 +28,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
  * @author Ivo Woltring
  */
 @Path("/ebook")
@@ -48,8 +47,9 @@ public class Ebook {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Folders getFolderContent(@PathParam("folder") final String path) {
-        final Folders folders = this.directory.folders(path);
-        System.out.println("!!!!!!!!!!!!" + folders); //TODO Remove me
+        final String pad = path.replace("+", "/");
+        final Folders folders = this.directory.folders(pad);
+        System.out.println("$$$$$$$" + folders); //TODO Remove me
         return folders;
 
     }

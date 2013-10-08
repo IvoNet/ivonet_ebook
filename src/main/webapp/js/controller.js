@@ -23,7 +23,7 @@
 function CtrlEbooks($scope, $http) {
     $scope.debug = false;
 
-    $http.get('service/ebook').success(function (data) {
+    $http.get('service/ebook/').success(function (data) {
         $scope.folders = data;
     });
 
@@ -32,29 +32,14 @@ function CtrlEbooks($scope, $http) {
     };
 
     $scope.showFolder = function (category) {
-
-        if (!category || !category.todos) {
-            $scope.todos = []
+        if (!category) {
+            $scope.folders = []
         } else {
-            $scope.todos = category.todos.todo;
+            $scope.path = 'service/ebook/' + $scope.folders.path + "+" + category;
+            $http.get($scope.path).success(function (data) {
+                $scope.folders = data;
+            });
+
         }
     };
-
-
-//    $scope.tagById = function (ids) {
-//        tags = $scope.things.tags.tag;
-//        mytags = "";
-//        for (x = 0; x < ids.length; x++) {
-//            id = ids[x];
-//            for (i = 0; i < tags.length; i++) {
-//                tag = tags[i];
-//                alert(tag.id + " " + id);
-//                if (tag.id == id) {
-//                    mytags = mytags + " " + tag.name;
-//                }
-//            }
-//        }
-//        return mytags;
-//    }
-
 }

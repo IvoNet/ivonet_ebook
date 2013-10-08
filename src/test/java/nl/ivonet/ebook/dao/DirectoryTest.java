@@ -16,6 +16,7 @@
 
 package nl.ivonet.ebook.dao;
 
+import nl.ivonet.ebook.model.Folders;
 import org.junit.Before;
 import org.junit.Test;
 

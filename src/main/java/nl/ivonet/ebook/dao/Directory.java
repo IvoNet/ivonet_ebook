@@ -17,6 +17,7 @@
 package nl.ivonet.ebook.dao;
 
 import nl.ivonet.cdi_properties.Property;
+import nl.ivonet.ebook.model.Folders;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
