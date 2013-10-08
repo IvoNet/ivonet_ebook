@@ -17,7 +17,6 @@
 package nl.ivonet.ebook.dao;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,7 +24,7 @@ import java.util.List;
  * @author Ivo Woltring
  */
 @SuppressWarnings("UnusedDeclaration")
-public class Folders implements Iterable<String> {
+public class Folders {
     private final List<String> folders;
     private String path;
 
@@ -47,11 +46,6 @@ public class Folders implements Iterable<String> {
 
     public void setPath(final String path) {
         this.path = path;
-    }
-
-    @Override
-    public Iterator<String> iterator() {
-        return this.folders.iterator();
     }
 
     @Override

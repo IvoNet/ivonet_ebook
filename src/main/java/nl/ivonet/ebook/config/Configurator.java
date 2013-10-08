@@ -14,24 +14,11 @@
  *   limitations under the License.
  */
 
-package nl.ivonet.ebook.dao;
-
-import org.junit.Before;
+package nl.ivonet.ebook.config;
 
 /**
  *
  * @author Ivo Woltring
  */
-public class FoldersTest {
-
-    private Folders folders;
-
-    @Before
-    public void setUp() throws Exception {
-        this.folders = new Folders();
-        this.folders.add("foo");
-        this.folders.add("bar");
-        this.folders.add("hello");
-    }
-
+public class Configurator {
 }

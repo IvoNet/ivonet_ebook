@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package nl.ivonet.ebook.bootstrap;
+package nl.ivonet.ebook.config;
 
 import nl.ivonet.ebook.controler.Ebook;
 
@@ -27,7 +27,7 @@ import java.util.Set;
  * @author Ivo Woltring
  */
 @ApplicationPath("service")
-public class ApplicationConfig extends Application {
+public class Bootstrap extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {

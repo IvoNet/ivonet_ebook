@@ -34,14 +34,12 @@ import javax.ws.rs.core.MediaType;
 @Path("/ebook")
 @RequestScoped
 public class Ebook {
-    //TODO move this to a property file
-    private static final String PATH = "/Volumes/Data/Books/ebook/IvoNetLibrary/";
     @Inject Directory directory;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Folders get() {
-        final Folders folders = this.directory.folders(PATH);
+        final Folders folders = this.directory.folders("");
         System.out.println("!!!!!!!!!!!!" + folders); //TODO Remove me
         return folders;
     }
@@ -50,7 +48,7 @@ public class Ebook {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Folders getFolderContent(@PathParam("folder") final String path) {
-        final Folders folders = this.directory.folders(PATH + path);
+        final Folders folders = this.directory.folders(path);
         System.out.println("!!!!!!!!!!!!" + folders); //TODO Remove me
         return folders;
 

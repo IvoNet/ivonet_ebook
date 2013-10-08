@@ -16,6 +16,11 @@
 
 package nl.ivonet.ebook.dao;
 
+import nl.ivonet.ebook.config.Property;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -27,6 +32,10 @@ import java.nio.file.Paths;
  * @author Ivo Woltring
  */
 public class Directory {
+
+    @Inject
+    @Property(key = "baseDir", mandatory = true)
+    private String baseFolder;
 
     public Folders folders(final String path) {
         final DirectoryStream.Filter<Path> directoryFilter =
@@ -40,8 +49,7 @@ public class Directory {
                         }
                     }
                 };
-
-        final Path dir = Paths.get(path);
+        final Path dir = Paths.get(baseFolder + path);
         final Folders folders = new Folders();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, directoryFilter)) {
             for (final Path entry : stream) {
@@ -51,6 +59,13 @@ public class Directory {
             System.err.println(x);
         }
         return folders;
+    }
+
+    @PostConstruct
+    public void postConstruct() {
+        if (!baseFolder.endsWith(File.separator)) {
+            baseFolder += "/";
+        }
     }
 
 }
