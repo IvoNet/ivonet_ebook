@@ -16,7 +16,7 @@
 
 package nl.ivonet.ebook.dao;
 
-import nl.ivonet.ebook.config.Property;
+import nl.ivonet.cdi_properties.Property;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -34,7 +34,7 @@ import java.nio.file.Paths;
 public class Directory {
 
     @Inject
-    @Property(key = "baseDir", mandatory = true)
+    @Property
     private String baseFolder;
 
     public Folders folders(final String path) {
@@ -50,7 +50,8 @@ public class Directory {
                     }
                 };
         final Path dir = Paths.get(baseFolder + path);
-        final Folders folders = new Folders();
+        final Folders folders = new Folders(path);
+
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, directoryFilter)) {
             for (final Path entry : stream) {
                 folders.add(entry.getFileName().toString());

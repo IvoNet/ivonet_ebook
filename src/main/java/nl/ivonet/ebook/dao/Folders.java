@@ -28,8 +28,9 @@ public class Folders {
     private final List<String> folders;
     private String path;
 
-    public Folders() {
+    public Folders(final String path) {
         this.folders = new ArrayList<>();
+        this.path = path;
     }
 
     public void add(final String name) {

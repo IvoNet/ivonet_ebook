@@ -28,7 +28,7 @@ public class FoldersTest {
 
     @Before
     public void setUp() throws Exception {
-        this.folders = new Folders();
+        this.folders = new Folders("path");
         this.folders.add("foo");
         this.folders.add("bar");
         this.folders.add("hello");

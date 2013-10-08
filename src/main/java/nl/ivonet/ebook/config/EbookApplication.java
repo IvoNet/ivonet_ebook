@@ -27,7 +27,7 @@ import java.util.Set;
  * @author Ivo Woltring
  */
 @ApplicationPath("service")
-public class Bootstrap extends Application {
+public class EbookApplication extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
