@@ -14,24 +14,25 @@
  *   limitations under the License.
  */
 
-package nl.ivonet.ebook.model;
+package nl.ivonet.ebook.dao;
 
-import org.junit.Before;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  *
  * @author Ivo Woltring
  */
-public class FoldersTest {
+public class DirectoryFilter implements DirectoryStream.Filter<Path> {
 
-    private Folders folders;
-
-    @Before
-    public void setUp() throws Exception {
-        this.folders = new Folders("path");
-        this.folders.add("foo");
-        this.folders.add("bar");
-        this.folders.add("hello");
+    @Override
+    public boolean accept(final Path entry) throws IOException {
+        try {
+            return (Files.isDirectory(entry));
+        } catch (Exception e) {
+            return false;
+        }
     }
-
 }

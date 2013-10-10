@@ -24,12 +24,14 @@ import java.util.List;
  * @author Ivo Woltring
  */
 @SuppressWarnings("UnusedDeclaration")
-public class Folders {
+public class Folder {
     private final List<String> folders;
+    private final List<String> files;
     private String path;
 
-    public Folders(final String path) {
+    public Folder(final String path) {
         this.folders = new ArrayList<>();
+        this.files = new ArrayList<>();
         this.path = path;
         if (path != null && !path.isEmpty()) {
             folders.add("/");
@@ -37,8 +39,12 @@ public class Folders {
         }
     }
 
-    public void add(final String name) {
+    public void addFolder(final String name) {
         this.folders.add(name);
+    }
+
+    public void addFile(final String name) {
+        files.add(name);
     }
 
     public List<String> getFolders() {
@@ -53,10 +59,17 @@ public class Folders {
         this.path = path;
     }
 
+    public List<String> getFiles() {
+        return files;
+    }
+
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Folders{");
-        sb.append("folders=").append(this.folders);
+        final StringBuilder sb = new StringBuilder("Folder{");
+        sb.append("files=").append(files);
+        sb.append(", folders=").append(folders);
+        sb.append(", path='").append(path).append('\'');
         sb.append('}');
         return sb.toString();
     }

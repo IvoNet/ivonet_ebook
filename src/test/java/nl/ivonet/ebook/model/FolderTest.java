@@ -14,29 +14,24 @@
  *   limitations under the License.
  */
 
-package nl.ivonet.ebook.dao;
+package nl.ivonet.ebook.model;
 
-import nl.ivonet.ebook.model.Folder;
 import org.junit.Before;
-import org.junit.Test;
 
 /**
  *
  * @author Ivo Woltring
  */
-public class DirectoryTest {
-    private String dir;
-    private Directory directory;
+public class FolderTest {
+
+    private Folder folder;
 
     @Before
     public void setUp() throws Exception {
-        this.dir = "/Volumes/Data/Books/ebook/IvoNetLibrary/";
-        this.directory = new Directory();
+        this.folder = new Folder("path");
+        this.folder.addFolder("foo");
+        this.folder.addFolder("bar");
+        this.folder.addFolder("hello");
     }
 
-    @Test
-    public void testFolders() throws Exception {
-        final Folder folder = this.directory.folder(this.dir);
-        System.out.println("folder = " + folder);
-    }
 }

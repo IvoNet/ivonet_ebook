@@ -50,7 +50,7 @@
                     <!--<li><a href="" ng-click="showToDos(things.scheduled)">Scheduled</a></li>-->
                     <!--<li><a href="" ng-click="showToDos(things.someday)">Someday</a></li>-->
                     <!--<li class="nav-header">Active Projects</li>-->
-                    <li ng-repeat="folder in folders.folders">
+                    <li ng-repeat="folder in folder.folder">
                         <a href="" ng-click="showFolder(folder)"> {{ folder }}</a>
                     </li>
                     <!--<li class="nav-header">Areas</li>-->
@@ -61,10 +61,10 @@
         </div>
         <div class="span9">
             <div class="hero-unit">
-                <!--<div ng-model="folders">{{ folders }}</div>-->
+                <!--<div ng-model="folder">{{ folder }}</div>-->
             </div>
         </div>
     </div>
 </div>
-<pre ng-model="debug" ng-show="debug">{{ folders | json }}</pre>
+<pre ng-model="debug" ng-show="debug">{{ folder | json }}</pre>
 <pre ng-model="debug" ng-show="debug">{{ path }}</pre>

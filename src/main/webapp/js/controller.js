@@ -22,32 +22,43 @@
  */
 function CtrlEbooks($scope, $http) {
     $scope.debug = false;
+    var base_uri = 'service/ebook/';
 
-    $http.get('service/ebook/').success(function (data) {
+    $http.get(base_uri).success(function (data) {
         $scope.folders = data;
     });
 
-    $scope.toggleDebug = function () {
-        $scope.debug = !$scope.debug;
-    };
-
+    /**
+     * Handles browsing folder.
+     * @param category
+     */
     $scope.showFolder = function (category) {
-        if (!category) {
-            $scope.folders = []
-        } else {
+        /**
+         * Create a path based on the category and the folder.path.
+         * @returns {string}
+         */
+        function createPath() {
             if (category == "..") {
                 pth = $scope.folders.path.split("+");
                 pth.pop();
-                $scope.path = 'service/ebook/' + pth.join("+");
+                return base_uri + pth.join("+");
             } else if (category == "/") {
-                $scope.path = 'service/ebook/';
-            } else {
-                $scope.path = 'service/ebook/' + $scope.folders.path + "+" + category;
+                return base_uri;
             }
-            $http.get($scope.path).success(function (data) {
+            return base_uri + $scope.folders.path + "+" + category;
+        }
+
+        if (!category) {
+            $scope.folders = []
+        } else {
+            $http.get(createPath()).success(function (data) {
                 $scope.folders = data;
             });
 
         }
+    };
+
+    $scope.toggleDebug = function () {
+        $scope.debug = !$scope.debug;
     };
 }

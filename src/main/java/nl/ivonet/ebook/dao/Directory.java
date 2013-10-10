@@ -17,7 +17,7 @@
 package nl.ivonet.ebook.dao;
 
 import nl.ivonet.cdi_properties.Property;
-import nl.ivonet.ebook.model.Folders;
+import nl.ivonet.ebook.model.Folder;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -38,29 +38,35 @@ public class Directory {
     @Property
     private String baseFolder;
 
-    public Folders folders(final String path) {
-        final DirectoryStream.Filter<Path> directoryFilter =
-                new DirectoryStream.Filter<Path>() {
-                    @Override
-                    public boolean accept(final Path path) throws IOException {
-                        try {
-                            return (Files.isDirectory(path));
-                        } catch (Exception e) {
-                            return false;
-                        }
-                    }
-                };
+    @Inject
+    private DirectoryFilter directoryFilter;
+
+    @Inject
+    private EpubFilter epubFilter;
+
+
+    public Folder folder(final String path) {
         final Path dir = Paths.get(baseFolder + path);
-        final Folders folders = new Folders(path);
+        final Folder folder = new Folder(path);
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, directoryFilter)) {
             for (final Path entry : stream) {
-                folders.add(entry.getFileName().toString());
+                folder.addFolder(entry.getFileName().toString());
             }
         } catch (IOException x) {
             System.err.println(x);
         }
-        return folders;
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, epubFilter)) {
+            for (final Path entry : stream) {
+                System.out.println("entry.getFileName() = " + entry.getFileName());
+                folder.addFile(entry.getFileName().toString());
+            }
+        } catch (IOException x) {
+            System.err.println(x);
+        }
+
+
+        return folder;
     }
 
     @PostConstruct

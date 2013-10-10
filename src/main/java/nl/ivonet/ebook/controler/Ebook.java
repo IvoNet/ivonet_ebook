@@ -17,7 +17,7 @@
 package nl.ivonet.ebook.controler;
 
 import nl.ivonet.ebook.dao.Directory;
-import nl.ivonet.ebook.model.Folders;
+import nl.ivonet.ebook.model.Folder;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -37,20 +37,20 @@ public class Ebook {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Folders get() {
-        final Folders folders = this.directory.folders("");
-        System.out.println("!!!!!!!!!!!!" + folders); //TODO Remove me
-        return folders;
+    public Folder get() {
+        final Folder folder = this.directory.folder("");
+        System.out.println("!!!!!!!!!!!!" + folder); //TODO Remove me
+        return folder;
     }
 
     @Path("{folder}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Folders getFolderContent(@PathParam("folder") final String path) {
+    public Folder getFolderContent(@PathParam("folder") final String path) {
         final String pad = path.replace("+", "/");
-        final Folders folders = this.directory.folders(pad);
-        System.out.println("$$$$$$$" + folders); //TODO Remove me
-        return folders;
+        final Folder folder = this.directory.folder(pad);
+        System.out.println("$$$$$$$" + folder); //TODO Remove me
+        return folder;
 
     }
 

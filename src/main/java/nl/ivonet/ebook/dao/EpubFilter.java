@@ -16,27 +16,26 @@
 
 package nl.ivonet.ebook.dao;
 
-import nl.ivonet.ebook.model.Folder;
-import org.junit.Before;
-import org.junit.Test;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Locale;
 
 /**
  *
  * @author Ivo Woltring
  */
-public class DirectoryTest {
-    private String dir;
-    private Directory directory;
+public class EpubFilter implements DirectoryStream.Filter<Path> {
 
-    @Before
-    public void setUp() throws Exception {
-        this.dir = "/Volumes/Data/Books/ebook/IvoNetLibrary/";
-        this.directory = new Directory();
+    private static final String EPUB = ".epub";
+
+    @Override
+    public boolean accept(final Path entry) throws IOException {
+        return Files.isRegularFile(entry) && isEpub(entry);
     }
 
-    @Test
-    public void testFolders() throws Exception {
-        final Folder folder = this.directory.folder(this.dir);
-        System.out.println("folder = " + folder);
+    private boolean isEpub(final Path entry) {
+        return entry.getFileName().toString().toLowerCase(Locale.US).endsWith(EPUB);
     }
 }
