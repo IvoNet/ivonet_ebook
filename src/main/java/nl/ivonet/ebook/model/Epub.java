@@ -23,6 +23,8 @@ package nl.ivonet.ebook.model;
 public class Epub {
     private String filename;
     private String cover;
+    private String title;
+    private String description;
 
     public Epub(final String filename) {
         this.filename = filename;
@@ -40,4 +42,19 @@ public class Epub {
         return filename;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(final String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
 }

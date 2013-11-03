@@ -63,6 +63,8 @@
             <div class="hero-unit" id="books">
                 <div ng-repeat="epub in folder.epubs" id="images">
                     <img alt="{{epub.filename}}" height="200" width="100" src="{{epub.cover}}"/>
+                    {{epub.title}}<br/>
+                    {{epub.description}}
                 </div>
                 <!--<div ng-model="folder">{{ folder }}</div>-->
             </div>

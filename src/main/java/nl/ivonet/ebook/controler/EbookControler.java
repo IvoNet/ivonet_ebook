@@ -40,18 +40,14 @@ public class EbookControler {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Folder get() {
-        final Folder folder = this.directory.folder("");
-        System.out.println("!!!!!!!!!!!!" + folder); //TODO Remove me
-        return folder;
+        return this.directory.folder("");
     }
 
     @Path("{folder}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Folder getFolderContent(@PathParam("folder") final String path) {
-        final Folder folder = this.directory.folder(path);
-        System.out.println("$$$$$$$" + folder); //TODO Remove me
-        return folder;
+        return this.directory.folder(path);
     }
 
 }

@@ -33,6 +33,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  *
@@ -78,8 +79,26 @@ public class Directory {
 
     private Epub parseEpub(final String filename) throws IOException {
         final Book book = epubReader.readEpub(new FileInputStream(filename));
-
         final Epub epub = new Epub(filename);
+        epub.setCover(parseCover(book));
+        epub.setTitle(parseTitle(book));
+        epub.setDescription(parseDescription(book));
+        return epub;
+    }
+
+    private String parseDescription(final Book book) {
+        final List<String> descriptions = book.getMetadata().getDescriptions();
+        if (descriptions == null || descriptions.isEmpty()) {
+            return "";
+        }
+        return descriptions.get(0).replaceAll("(?:</?[a-zA-Z0-9=\" ]*/?>)", "");
+    }
+
+    private String parseTitle(final Book book) {
+        return book.getMetadata().getFirstTitle();
+    }
+
+    private String parseCover(final Book book) throws IOException {
         final Resource coverImage = book.getCoverImage();
         final String defaultExtension;
         final String jpg;
@@ -91,8 +110,7 @@ public class Directory {
             System.out.println("defaultExtension = " + defaultExtension);
             jpg = imageBase64.encodeToString(coverImage.getInputStream(), defaultExtension);
         }
-        epub.setCover(jpg);
-        return epub;
+        return jpg;
     }
 
     @PostConstruct

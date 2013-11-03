@@ -65,7 +65,6 @@ public class Folder {
         return epubs;
     }
 
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Folder{");
