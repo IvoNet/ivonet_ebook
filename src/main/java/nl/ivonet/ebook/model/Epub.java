@@ -14,16 +14,30 @@
  *   limitations under the License.
  */
 
-angular.module('ebook', []).
-        config(['$routeProvider', function ($routeProvider) {
-            $routeProvider.
-                    when('/', {templateUrl: 'views/index-detail.html', controller: CtrlEbooks}).
-                    otherwise({redirectTo: '/'});
-        }]).filter('epub', function () {
-                       return function (input) {
-                           console.info(input);
+package nl.ivonet.ebook.model;
 
-                           //return input.substr(0, input.length - 5);
+/**
+ *
+ * @author Ivo Woltring
+ */
+public class Epub {
+    private String filename;
+    private String cover;
 
-                       }
-                   });
+    public Epub(final String filename) {
+        this.filename = filename;
+    }
+
+    public String getCover() {
+        return "data:image/jpg;base64, " + cover;
+    }
+
+    public void setCover(final String cover) {
+        this.cover = cover;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+}

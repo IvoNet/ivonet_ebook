@@ -22,10 +22,10 @@
  */
 function CtrlEbooks($scope, $http) {
     $scope.debug = false;
-    var base_uri = 'service/ebook/';
+    $scope.base_uri = 'service/ebook/';
 
-    $http.get(base_uri).success(function (data) {
-        $scope.folders = data;
+    $http.get($scope.base_uri).success(function (data) {
+        $scope.folder = data;
     });
 
     /**
@@ -38,21 +38,22 @@ function CtrlEbooks($scope, $http) {
          * @returns {string}
          */
         function createPath() {
+            var pth;
             if (category == "..") {
-                pth = $scope.folders.path.split("+");
+                pth = $scope.folder.path.split("+");
                 pth.pop();
-                return base_uri + pth.join("+");
+                return $scope.base_uri + pth.join("+");
             } else if (category == "/") {
-                return base_uri;
+                return $scope.base_uri;
             }
-            return base_uri + $scope.folders.path + "+" + category;
+            return $scope.base_uri + $scope.folder.path + "+" + category;
         }
 
         if (!category) {
-            $scope.folders = []
+            $scope.folder = []
         } else {
             $http.get(createPath()).success(function (data) {
-                $scope.folders = data;
+                $scope.folder = data;
             });
 
         }
@@ -61,4 +62,14 @@ function CtrlEbooks($scope, $http) {
     $scope.toggleDebug = function () {
         $scope.debug = !$scope.debug;
     };
+
+    $scope.loadFile = function (category) {
+//        alert("foo");
+        function createPath() {
+            return base_uri + $scope.folder.path + "/" + category;
+        }
+
+        $scope.epubpath = createPath();
+    };
+
 }

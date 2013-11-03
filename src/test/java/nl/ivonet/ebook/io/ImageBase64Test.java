@@ -14,16 +14,27 @@
  *   limitations under the License.
  */
 
-angular.module('ebook', []).
-        config(['$routeProvider', function ($routeProvider) {
-            $routeProvider.
-                    when('/', {templateUrl: 'views/index-detail.html', controller: CtrlEbooks}).
-                    otherwise({redirectTo: '/'});
-        }]).filter('epub', function () {
-                       return function (input) {
-                           console.info(input);
+package nl.ivonet.ebook.io;
 
-                           //return input.substr(0, input.length - 5);
+import org.junit.Before;
+import org.junit.Test;
 
-                       }
-                   });
+/**
+ *
+ * @author Ivo Woltring
+ */
+public class ImageBase64Test {
+    private ImageBase64 imageBase64;
+
+    @Before
+    public void setUp() throws Exception {
+        imageBase64 = new ImageBase64();
+    }
+
+    @Test
+    public void testEncodeToString() throws Exception {
+        final String jpg = imageBase64
+                .encodeToString("/Users/ivonet/dev/ebook/ivonet-ebook/src/main/resources/ebook.jpg", "jpg");
+        System.out.println(jpg);
+    }
+}

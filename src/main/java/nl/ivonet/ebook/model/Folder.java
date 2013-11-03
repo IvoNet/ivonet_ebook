@@ -16,6 +16,8 @@
 
 package nl.ivonet.ebook.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +28,14 @@ import java.util.List;
 @SuppressWarnings("UnusedDeclaration")
 public class Folder {
     private final List<String> folders;
-    private final List<String> files;
+    private final List<Epub> epubs;
     private String path;
 
     public Folder(final String path) {
         this.folders = new ArrayList<>();
-        this.files = new ArrayList<>();
+        this.epubs = new ArrayList<>();
         this.path = path;
-        if (path != null && !path.isEmpty()) {
+        if (StringUtils.isNotEmpty(path)) {
             folders.add("/");
             folders.add("..");
         }
@@ -43,8 +45,8 @@ public class Folder {
         this.folders.add(name);
     }
 
-    public void addFile(final String name) {
-        files.add(name);
+    public void addBook(final Epub epub) {
+        epubs.add(epub);
     }
 
     public List<String> getFolders() {
@@ -59,16 +61,16 @@ public class Folder {
         this.path = path;
     }
 
-    public List<String> getFiles() {
-        return files;
+    public List<Epub> getEpubs() {
+        return epubs;
     }
 
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Folder{");
-        sb.append("files=").append(files);
-        sb.append(", folders=").append(folders);
+        sb.append("files=").append(epubs);
+        sb.append(", folder=").append(folders);
         sb.append(", path='").append(path).append('\'');
         sb.append('}');
         return sb.toString();

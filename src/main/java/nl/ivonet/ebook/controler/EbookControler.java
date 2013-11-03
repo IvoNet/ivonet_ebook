@@ -17,6 +17,7 @@
 package nl.ivonet.ebook.controler;
 
 import nl.ivonet.ebook.dao.Directory;
+import nl.ivonet.ebook.io.ImageBase64;
 import nl.ivonet.ebook.model.Folder;
 
 import javax.enterprise.context.RequestScoped;
@@ -32,8 +33,9 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/ebook")
 @RequestScoped
-public class Ebook {
-    @Inject Directory directory;
+public class EbookControler {
+    @Inject private Directory directory;
+    @Inject private ImageBase64 imageBase64;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -47,11 +49,9 @@ public class Ebook {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Folder getFolderContent(@PathParam("folder") final String path) {
-        final String pad = path.replace("+", "/");
-        final Folder folder = this.directory.folder(pad);
+        final Folder folder = this.directory.folder(path);
         System.out.println("$$$$$$$" + folder); //TODO Remove me
         return folder;
-
     }
 
 }

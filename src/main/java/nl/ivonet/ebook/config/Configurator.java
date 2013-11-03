@@ -14,16 +14,20 @@
  *   limitations under the License.
  */
 
-angular.module('ebook', []).
-        config(['$routeProvider', function ($routeProvider) {
-            $routeProvider.
-                    when('/', {templateUrl: 'views/index-detail.html', controller: CtrlEbooks}).
-                    otherwise({redirectTo: '/'});
-        }]).filter('epub', function () {
-                       return function (input) {
-                           console.info(input);
+package nl.ivonet.ebook.config;
 
-                           //return input.substr(0, input.length - 5);
+import nl.siegmann.epublib.epub.EpubReader;
 
-                       }
-                   });
+import javax.enterprise.inject.Produces;
+
+/**
+ *
+ * @author Ivo Woltring
+ */
+public class Configurator {
+
+    @Produces
+    public EpubReader epubReaderProducer() {
+        return new EpubReader();
+    }
+}

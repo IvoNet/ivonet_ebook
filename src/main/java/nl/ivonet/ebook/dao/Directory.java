@@ -17,11 +17,17 @@
 package nl.ivonet.ebook.dao;
 
 import nl.ivonet.cdi_properties.Property;
+import nl.ivonet.ebook.io.ImageBase64;
+import nl.ivonet.ebook.model.Epub;
 import nl.ivonet.ebook.model.Folder;
+import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.domain.Resource;
+import nl.siegmann.epublib.epub.EpubReader;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -37,16 +43,17 @@ public class Directory {
     @Inject
     @Property
     private String baseFolder;
-
     @Inject
     private DirectoryFilter directoryFilter;
-
     @Inject
     private EpubFilter epubFilter;
+    @Inject
+    private ImageBase64 imageBase64;
 
+    @Inject private EpubReader epubReader;
 
     public Folder folder(final String path) {
-        final Path dir = Paths.get(baseFolder + path);
+        final Path dir = Paths.get(baseFolder + path.replace("+", "/"));
         final Folder folder = new Folder(path);
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, directoryFilter)) {
@@ -58,8 +65,8 @@ public class Directory {
         }
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, epubFilter)) {
             for (final Path entry : stream) {
-                System.out.println("entry.getFileName() = " + entry.getFileName());
-                folder.addFile(entry.getFileName().toString());
+                final String filename = dir + "/" + entry.getFileName().toString();
+                folder.addBook(parseEpub(filename));
             }
         } catch (IOException x) {
             System.err.println(x);
@@ -67,6 +74,25 @@ public class Directory {
 
 
         return folder;
+    }
+
+    private Epub parseEpub(final String filename) throws IOException {
+        final Book book = epubReader.readEpub(new FileInputStream(filename));
+
+        final Epub epub = new Epub(filename);
+        final Resource coverImage = book.getCoverImage();
+        final String defaultExtension;
+        final String jpg;
+        if (coverImage == null) {
+            jpg = imageBase64.defaultImage();
+        } else {
+            defaultExtension = coverImage.getMediaType()
+                    .getDefaultExtension().substring(1);
+            System.out.println("defaultExtension = " + defaultExtension);
+            jpg = imageBase64.encodeToString(coverImage.getInputStream(), defaultExtension);
+        }
+        epub.setCover(jpg);
+        return epub;
     }
 
     @PostConstruct
