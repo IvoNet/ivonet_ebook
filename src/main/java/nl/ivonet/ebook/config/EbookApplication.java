@@ -16,6 +16,7 @@
 
 package nl.ivonet.ebook.config;
 
+import nl.ivonet.ebook.controler.DownloadController;
 import nl.ivonet.ebook.controler.EbookControler;
 
 import javax.ws.rs.ApplicationPath;
@@ -50,6 +51,7 @@ public class EbookApplication extends Application {
      */
     private void addRestResourceClasses(final Set<Class<?>> resources) {
         resources.add(EbookControler.class);
+        resources.add(DownloadController.class);
     }
 
 }

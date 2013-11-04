@@ -63,6 +63,7 @@
             <div class="hero-unit" id="books">
                 <div ng-repeat="epub in folder.epubs" id="images">
                     <img alt="{{epub.filename}}" height="200" width="100" src="{{epub.cover}}"/>
+                    <a href="service/download/{{folder.path}}+{{epub.filename}}">download</a>
                     {{epub.title}}<br/>
                     {{epub.description}}
                 </div>
@@ -72,8 +73,8 @@
     </div>
 </div>
 <pre ng-model="debug" ng-show="debug">{{ folder | json }}</pre>
-<pre ng-model="debug" ng-show="debug">{{ path }}</pre>
-<pre ng-model="debug" ng-show="debug">{{ epubpath }}</pre>
+<!--<pre ng-model="debug" ng-show="debug">{{ path }}</pre>-->
+<!--<pre ng-model="debug" ng-show="debug">{{ epubpath }}</pre>-->
 
 <!--<script language="JavaScript">-->
 <!--$(function() {-->

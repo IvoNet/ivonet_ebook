@@ -63,13 +63,5 @@ function CtrlEbooks($scope, $http) {
         $scope.debug = !$scope.debug;
     };
 
-    $scope.loadFile = function (category) {
-//        alert("foo");
-        function createPath() {
-            return base_uri + $scope.folder.path + "/" + category;
-        }
-
-        $scope.epubpath = createPath();
-    };
 
 }

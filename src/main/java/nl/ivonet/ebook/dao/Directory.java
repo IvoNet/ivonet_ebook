@@ -79,7 +79,9 @@ public class Directory {
 
     private Epub parseEpub(final String filename) throws IOException {
         final Book book = epubReader.readEpub(new FileInputStream(filename));
-        final Epub epub = new Epub(filename);
+        final String[] splitpath = filename.split(File.separator);
+        String epubName = splitpath != null && splitpath.length > 0 ? splitpath[splitpath.length - 1] : filename;
+        final Epub epub = new Epub(epubName);
         epub.setCover(parseCover(book));
         epub.setTitle(parseTitle(book));
         epub.setDescription(parseDescription(book));

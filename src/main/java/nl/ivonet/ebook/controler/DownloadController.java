@@ -16,9 +16,7 @@
 
 package nl.ivonet.ebook.controler;
 
-import nl.ivonet.ebook.dao.Directory;
-import nl.ivonet.ebook.io.ImageBase64;
-import nl.ivonet.ebook.model.Folder;
+import nl.ivonet.cdi_properties.Property;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -26,29 +24,26 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.File;
 
 /**
+ *
  * @author Ivo Woltring
  */
-@Path("/ebook")
+@Path("/download")
 @RequestScoped
-public class EbookControler {
-    @Inject private Directory directory;
-    @Inject private ImageBase64 imageBase64;
+public class DownloadController {
+    @Inject @Property private String baseFolder;
+
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Folder get() {
-        return this.directory.folder("");
+    @Path("{path}")
+    @Produces("application/epub+zip")
+    public Response downloadEpub(@PathParam("path") final String path) {
+        final String pad = baseFolder + "/" + path.replace("+", "/");
+        System.out.println("pad = " + pad);
+        final File file = new File(pad);
+        return Response.ok(file, "application/epub+zip").build();
     }
-
-    @Path("{folder}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Folder getFolderContent(@PathParam("folder") final String path) {
-        return this.directory.folder(path);
-    }
-
-
 }
