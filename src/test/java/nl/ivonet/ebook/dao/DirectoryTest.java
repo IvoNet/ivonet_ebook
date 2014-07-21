@@ -18,6 +18,7 @@ package nl.ivonet.ebook.dao;
 
 import nl.ivonet.ebook.model.Folder;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -35,6 +36,7 @@ public class DirectoryTest {
     }
 
     @Test
+    @Ignore
     public void testFolders() throws Exception {
         final Folder folder = this.directory.folder(this.dir);
         System.out.println("folder = " + folder);

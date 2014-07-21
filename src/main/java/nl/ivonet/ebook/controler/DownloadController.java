@@ -36,14 +36,13 @@ import java.io.File;
 public class DownloadController {
     @Inject @Property private String baseFolder;
 
-
     @GET
     @Path("{path}")
     @Produces("application/epub+zip")
     public Response downloadEpub(@PathParam("path") final String path) {
         final String pad = baseFolder + "/" + path.replace("+", "/");
-        System.out.println("pad = " + pad);
         final File file = new File(pad);
-        return Response.ok(file, "application/epub+zip").build();
+        return Response.ok(file, "application/epub+zip")
+                       .build();
     }
 }

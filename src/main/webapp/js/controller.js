@@ -20,48 +20,54 @@
  * @param $scope the scope for the application
  * @param $http for doing http requests
  */
-function CtrlEbooks($scope, $http) {
-    $scope.debug = false;
-    $scope.base_uri = 'service/ebook/';
+function CtrlEbooks($scope, $http, focus) {
+   $scope.debug = false;
+   $scope.base_uri = 'service/ebook/';
+   focus('focusMe');
 
-    $http.get($scope.base_uri).success(function (data) {
-        $scope.folder = data;
-    });
+   $http.get($scope.base_uri).success(function (data) {
+      $scope.folder = data;
+   });
 
-    /**
-     * Handles browsing folder.
-     * @param category
-     */
-    $scope.showFolder = function (category) {
-        /**
-         * Create a path based on the category and the folder.path.
-         * @returns {string}
-         */
-        function createPath() {
-            var pth;
-            if (category == "..") {
-                pth = $scope.folder.path.split("+");
-                pth.pop();
-                return $scope.base_uri + pth.join("+");
-            } else if (category == "/") {
-                return $scope.base_uri;
-            }
-            return $scope.base_uri + $scope.folder.path + "+" + category;
-        }
+   /**
+    * Handles browsing folder.
+    * @param category
+    */
+   $scope.showFolder = function (category) {
+      /**
+       * Create a path based on the category and the folder.path.
+       * @returns {string}
+       */
+      function createPath() {
+         var pth;
+         if (category == "..") {
+            pth = $scope.folder.path.split("+");
+            pth.pop();
+            return $scope.base_uri + pth.join("+");
+         } else if (category == "/") {
+            return $scope.base_uri;
+         }
+         return $scope.base_uri + $scope.folder.path + "+" + category;
+      }
 
-        if (!category) {
-            $scope.folder = []
-        } else {
-            $http.get(createPath()).success(function (data) {
-                $scope.folder = data;
-            });
+      if (!category) {
+         $scope.folder = []
+      } else {
+         $http.get(createPath()).success(function (data) {
+            $scope.folder = data;
+            $scope.clearFilter();
+         });
 
-        }
-    };
+      }
+   };
 
-    $scope.toggleDebug = function () {
-        $scope.debug = !$scope.debug;
-    };
+   $scope.toggleDebug = function () {
+      $scope.debug = !$scope.debug;
+   };
 
+   $scope.clearFilter = function () {
+      $scope.nameText = '';
+      focus('focusMe');
+   };
 
 }

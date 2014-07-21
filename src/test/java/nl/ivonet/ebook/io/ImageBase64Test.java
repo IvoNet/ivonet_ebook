@@ -33,8 +33,14 @@ public class ImageBase64Test {
 
     @Test
     public void testEncodeToString() throws Exception {
-        final String jpg = imageBase64
-                .encodeToString("/Users/ivonet/dev/ebook/ivonet-ebook/src/main/resources/ebook.jpg", "jpg");
+        final String jpg = imageBase64.encodeToString(
+                "/Users/ivonet/dev/ebook/ivonet-ebook/src/main/resources/ebook.jpg", "jpg");
         System.out.println(jpg);
+    }
+
+    @Test
+    public void testDecode() throws Exception {
+
+
     }
 }

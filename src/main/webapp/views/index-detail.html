@@ -33,55 +33,38 @@
         </div>
     </div>
 </div>
-
+<div><br/></div>
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span3">
             <!--Sidebar content-->
             <div class="well sidebar-nav">
+                <input type="text" data-ng-model="nameText" focus-on="focusMe" style="width: 100px;"/>
+                <button id="clear-filter" ng-click="clearFilter()" type="button">X</button>
                 <ul class="nav nav-list">
                     <li class="nav-header">Collect</li>
-                    <!--<li><a href="" ng-click="showToDos(things.inbox)">Inbox</a></li>-->
-                    <!--<li><a href="" ng-click="showToDos(things.inbox)">Inbox</a></li>-->
-                    <!--<li class="nav-header">Focus</li>-->
-                    <!--<li class="nav-header">Focus</li>-->
-                    <!--<li><a href="" ng-click="showToDos(things.today)">Today</a></li>-->
-                    <!--<li><a href="" ng-click="showToDos(things.next)">Next</a></li>-->
-                    <!--<li><a href="" ng-click="showToDos(things.scheduled)">Scheduled</a></li>-->
-                    <!--<li><a href="" ng-click="showToDos(things.someday)">Someday</a></li>-->
-                    <!--<li class="nav-header">Active Projects</li>-->
-                    <li ng-repeat="folder in folder.folders">
-                        <a href="" ng-click="showFolder(folder)"> {{ folder }}</a>
+                    <li data-ng-repeat="folder in folder.folders | filter:nameText">
+                        <a href="" data-ng-click="showFolder(folder)"> {{ folder }}</a>
                     </li>
-                    <!--<li class="nav-header">Areas</li>-->
-                    <!--<li ng-repeat="area in things.areas.area"><a href="" ng-click="showToDos(area)">{{ area.name }}</a>-->
-                    <!--</li>-->
                 </ul>
             </div>
         </div>
         <div class="span9">
             <div class="hero-unit" id="books">
-                <div ng-repeat="epub in folder.epubs" id="images">
-                    <img alt="{{epub.filename}}" height="200" width="100" src="{{epub.cover}}"/>
-                    <a href="service/download/{{folder.path}}+{{epub.filename}}">download</a>
+                <br/>
+                <br/>
+
+                <div data-ng-repeat="epub in folder.epubs" id="images">
+                    <a href="service/download/{{folder.path}}+{{epub.filename}}" ng-click="clearFilter()"><img
+                            alt="{{epub.filename}}"
+                            height="200" width="100"
+                            src="{{epub.cover}}"/></a>
                     {{epub.title}}<br/>
                     {{epub.description}}
+                    {{nameText=''}}
                 </div>
-                <!--<div ng-model="folder">{{ folder }}</div>-->
             </div>
         </div>
     </div>
 </div>
 <pre ng-model="debug" ng-show="debug">{{ folder | json }}</pre>
-<!--<pre ng-model="debug" ng-show="debug">{{ path }}</pre>-->
-<!--<pre ng-model="debug" ng-show="debug">{{ epubpath }}</pre>-->
-
-<!--<script language="JavaScript">-->
-<!--$(function() {-->
-<!--alert("done");-->
-<!--});-->
-<!---->
-<!--$(images).live(function () {-->
-<!--alert("!!!");-->
-<!--})-->
-<!--</script>-->

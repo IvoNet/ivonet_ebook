@@ -41,8 +41,7 @@ import java.util.List;
  */
 public class Directory {
 
-    @Inject
-    @Property
+    @Inject @Property
     private String baseFolder;
     @Inject
     private DirectoryFilter directoryFilter;
@@ -59,14 +58,16 @@ public class Directory {
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, directoryFilter)) {
             for (final Path entry : stream) {
-                folder.addFolder(entry.getFileName().toString());
+                folder.addFolder(entry.getFileName()
+                                      .toString());
             }
         } catch (IOException x) {
             System.err.println(x);
         }
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, epubFilter)) {
             for (final Path entry : stream) {
-                final String filename = dir + "/" + entry.getFileName().toString();
+                final String filename = dir + "/" + entry.getFileName()
+                                                         .toString();
                 folder.addBook(parseEpub(filename));
             }
         } catch (IOException x) {
@@ -89,30 +90,30 @@ public class Directory {
     }
 
     private String parseDescription(final Book book) {
-        final List<String> descriptions = book.getMetadata().getDescriptions();
+        final List<String> descriptions = book.getMetadata()
+                                              .getDescriptions();
         if (descriptions == null || descriptions.isEmpty()) {
             return "";
         }
-        return descriptions.get(0).replaceAll("(?:</?[a-zA-Z0-9=\" ]*/?>)", "");
+        return descriptions.get(0)
+                           .replaceAll("(?:</?[a-zA-Z0-9=\" ]*/?>)", "");
     }
 
     private String parseTitle(final Book book) {
-        return book.getMetadata().getFirstTitle();
+        return book.getMetadata()
+                   .getFirstTitle();
     }
 
     private String parseCover(final Book book) throws IOException {
         final Resource coverImage = book.getCoverImage();
         final String defaultExtension;
-        final String jpg;
         if (coverImage == null) {
-            jpg = imageBase64.defaultImage();
-        } else {
-            defaultExtension = coverImage.getMediaType()
-                    .getDefaultExtension().substring(1);
-            System.out.println("defaultExtension = " + defaultExtension);
-            jpg = imageBase64.encodeToString(coverImage.getInputStream(), defaultExtension);
+            return imageBase64.defaultImage();
         }
-        return jpg;
+        defaultExtension = coverImage.getMediaType()
+                                     .getDefaultExtension()
+                                     .substring(1);
+        return imageBase64.encodeToString(coverImage.getInputStream(), defaultExtension);
     }
 
     @PostConstruct

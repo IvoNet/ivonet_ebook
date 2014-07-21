@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 by Ivo Wolring (http://ivonet.nl)
+ * Copyright (c) 2013 by Ivo Woltring (http://ivonet.nl)
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -30,4 +30,8 @@ body {
         padding-left: 5px;
         padding-right: 5px;
     }
+}
+
+button {
+    width: 25px;
 }

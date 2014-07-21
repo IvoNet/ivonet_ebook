@@ -14,16 +14,28 @@
  *   limitations under the License.
  */
 
-angular.module('ebook', []).
-        config(['$routeProvider', function ($routeProvider) {
-            $routeProvider.
-                    when('/', {templateUrl: 'views/index-detail.html', controller: CtrlEbooks}).
-                    otherwise({redirectTo: '/'});
-        }]).filter('epub', function () {
-                       return function (input) {
-                           console.info(input);
+var app = angular.module('ebook', [])
 
-                           //return input.substr(0, input.length - 5);
+app.config(['$routeProvider', function ($routeProvider) {
+   $routeProvider.
+         when('/', {templateUrl: 'views/index-detail.html', controller: CtrlEbooks}).
+         otherwise({redirectTo: '/'});
+}]);
 
-                       }
-                   });
+app.directive('focusOn', function () {
+   return function (scope, elem, attr) {
+      scope.$on('focusOn', function (e, name) {
+         if (name === attr.focusOn) {
+            elem[0].focus();
+         }
+      });
+   };
+});
+
+app.factory('focus', function ($rootScope, $timeout) {
+   return function (name) {
+      $timeout(function () {
+         $rootScope.$broadcast('focusOn', name);
+      });
+   }
+});
