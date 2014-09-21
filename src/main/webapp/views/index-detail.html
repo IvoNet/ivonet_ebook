@@ -40,7 +40,7 @@
             <!--Sidebar content-->
             <div class="well sidebar-nav">
                 <input type="text" data-ng-model="nameText" focus-on="focusMe" style="width: 100px;"/>
-                <button id="clear-filter" ng-click="clearFilter()" type="button">X</button>
+                <button id="clear-filter" data-ng-click="clearFilter()" type="button">X</button>
                 <ul class="nav nav-list">
                     <li class="nav-header">Collect</li>
                     <li data-ng-repeat="folder in folder.folders | filter:nameText">
@@ -55,7 +55,7 @@
                 <br/>
 
                 <div data-ng-repeat="epub in folder.epubs" id="images">
-                    <a href="service/download/{{folder.path}}+{{epub.filename}}" ng-click="clearFilter()"><img
+                    <a href="service/download/{{folder.path}}+{{epub.filename}}" data-ng-click="clearFilter()"><img
                             alt="{{epub.filename}}"
                             height="200" width="100"
                             src="{{epub.cover}}"/></a>
