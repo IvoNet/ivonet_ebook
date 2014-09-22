@@ -31,7 +31,7 @@ public class DirectoryFilter implements DirectoryStream.Filter<Path> {
     public boolean accept(final Path entry) throws IOException {
         try {
             return (Files.isDirectory(entry));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return false;
         }
     }

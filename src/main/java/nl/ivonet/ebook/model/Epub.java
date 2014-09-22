@@ -21,7 +21,7 @@ package nl.ivonet.ebook.model;
  * @author Ivo Woltring
  */
 public class Epub {
-    private String filename;
+    private final String filename;
     private String cover;
     private String title;
     private String description;

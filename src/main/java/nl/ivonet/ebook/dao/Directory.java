@@ -41,15 +41,10 @@ import java.util.List;
  */
 public class Directory {
 
-    @Inject @Property
-    private String baseFolder;
-    @Inject
-    private DirectoryFilter directoryFilter;
-    @Inject
-    private EpubFilter epubFilter;
-    @Inject
-    private ImageBase64 imageBase64;
-
+    @Inject @Property private String baseFolder;
+    @Inject private DirectoryFilter directoryFilter;
+    @Inject private EpubFilter epubFilter;
+    @Inject private ImageBase64 imageBase64;
     @Inject private EpubReader epubReader;
 
     public Folder folder(final String path) {
@@ -81,7 +76,7 @@ public class Directory {
     private Epub parseEpub(final String filename) throws IOException {
         final Book book = epubReader.readEpub(new FileInputStream(filename));
         final String[] splitpath = filename.split(File.separator);
-        String epubName = splitpath != null && splitpath.length > 0 ? splitpath[splitpath.length - 1] : filename;
+        final String epubName = splitpath.length > 0 ? splitpath[(splitpath.length - 1)] : filename;
         final Epub epub = new Epub(epubName);
         epub.setCover(parseCover(book));
         epub.setTitle(parseTitle(book));
