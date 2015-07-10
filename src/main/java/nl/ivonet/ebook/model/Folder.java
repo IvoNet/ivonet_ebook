@@ -16,8 +16,6 @@
 
 package nl.ivonet.ebook.model;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +33,10 @@ public class Folder {
         this.folders = new ArrayList<>();
         this.epubs = new ArrayList<>();
         this.path = path;
-        if (StringUtils.isNotEmpty(path)) {
-            folders.add("/");
-            folders.add("..");
-        }
+//        if (StringUtils.isNotEmpty(path)) {
+//            folders.add("/");
+//            folders.add("..");
+//        }
     }
 
     public void addFolder(final String name) {

@@ -22,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- *
  * @author Ivo Woltring
  */
 public class DirectoryFilter implements DirectoryStream.Filter<Path> {
@@ -30,7 +29,8 @@ public class DirectoryFilter implements DirectoryStream.Filter<Path> {
     @Override
     public boolean accept(final Path entry) throws IOException {
         try {
-            return (Files.isDirectory(entry));
+            return Files.isDirectory(entry) && !entry.toString()
+                                                     .contains(".AppleDouble");
         } catch (final Exception e) {
             return false;
         }

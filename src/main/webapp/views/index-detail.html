@@ -43,7 +43,9 @@
                 <button id="clear-filter" data-ng-click="clearFilter()" type="button">X</button>
                 <ul class="nav nav-list">
                     <li class="nav-header">Collect</li>
-                    <li data-ng-repeat="folder in folder.folders | filter:nameText">
+                    <li><a href="" data-ng-click="showFolder('/')">&DoubleLeftArrow; Home</a></li>
+                    <li><a href="" data-ng-click="showFolder('..')">&DoubleUpArrow; Up</a></li>
+                    <li data-ng-repeat="folder in folder.folders | orderBy:'toString()'| filter:nameText">
                         <a href="" data-ng-click="showFolder(folder)"> {{ folder }}</a>
                     </li>
                 </ul>
@@ -54,7 +56,7 @@
                 <br/>
                 <br/>
 
-                <div data-ng-repeat="epub in folder.epubs" id="images">
+                <div data-ng-repeat="epub in folder.epubs | orderBy:'filename'" id="images">
                     <a href="service/download/{{folder.path}}+{{epub.filename}}" data-ng-click="clearFilter()"><img
                             alt="{{epub.filename}}"
                             height="200" width="100"
