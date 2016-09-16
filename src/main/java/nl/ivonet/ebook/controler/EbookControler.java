@@ -49,6 +49,4 @@ public class EbookControler {
     public Folder getFolderContent(@PathParam("folder") final String path) {
         return this.directory.folder(path);
     }
-
-
 }

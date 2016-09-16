@@ -45,12 +45,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!--<repositories>-->
-    <!--<repository>-->
-    <!--<id>psiegman-repo</id>-->
-    <!--<url>https://github.com/psiegman/mvn-repo/raw/master/releases</url>-->
-    <!--</repository>-->
-    <!--</repositories>-->
+    <repositories>
+        <repository>
+            <id>psiegman-repo</id>
+            <url>https://github.com/psiegman/mvn-repo/raw/master/releases</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -69,6 +69,11 @@
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.13</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>

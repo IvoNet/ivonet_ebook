@@ -16,12 +16,8 @@
 
 package nl.ivonet.ebook.config;
 
-import nl.ivonet.ebook.controler.DownloadController;
-import nl.ivonet.ebook.controler.EbookControler;
-
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import java.util.Set;
 
 /**
  *
@@ -29,29 +25,4 @@ import java.util.Set;
  */
 @ApplicationPath("service")
 public class EbookApplication extends Application {
-
-    @Override
-    public Set<Class<?>> getClasses() {
-        final Set<Class<?>> resources = new java.util.HashSet<>();
-        // following code can be used to customize Jersey 2.0 JSON provider:
-        try {
-            final Class jsonProvider = Class.forName("org.glassfish.jersey.jackson.JacksonFeature");
-            // Class jsonProvider = Class.forName("org.glassfish.jersey.moxy.json.MoxyJsonFeature");
-            // Class jsonProvider = Class.forName("org.glassfish.jersey.jettison.JettisonFeature");
-            resources.add(jsonProvider);
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        addRestResourceClasses(resources);
-        return resources;
-    }
-
-    /*
-    Add your own resources here.
-     */
-    private void addRestResourceClasses(final Set<Class<?>> resources) {
-        resources.add(EbookControler.class);
-        resources.add(DownloadController.class);
-    }
-
 }
