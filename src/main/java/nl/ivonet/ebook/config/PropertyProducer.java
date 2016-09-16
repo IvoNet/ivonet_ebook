@@ -16,14 +16,12 @@
 
 package nl.ivonet.ebook.config;
 
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
 
 public class PropertyProducer {
     private Properties properties;
@@ -47,15 +45,7 @@ public class PropertyProducer {
     }
 
     private String getKey(final InjectionPoint ip) {
-        return (ip.getAnnotated()
-                  .isAnnotationPresent(Property.class) && !ip.getAnnotated()
-                                                             .getAnnotation(Property.class)
-                                                             .
-                                                                     value()
-                                                             .isEmpty()) ? ip.getAnnotated()
-                                                                             .getAnnotation(Property.class)
-                                                                             .value() : ip.getMember()
-                                                                                          .getName();
+        return ip.getAnnotated().isAnnotationPresent(Property.class) && !ip.getAnnotated().getAnnotation(Property.class).value().isEmpty() ? ip.getAnnotated().getAnnotation(Property.class).value() : ip.getMember().getName();
     }
 
     @PostConstruct
