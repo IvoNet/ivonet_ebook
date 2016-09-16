@@ -21,6 +21,7 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Properties;
 
 public class PropertyProducer {
@@ -45,7 +46,13 @@ public class PropertyProducer {
     }
 
     private String getKey(final InjectionPoint ip) {
-        return ip.getAnnotated().isAnnotationPresent(Property.class) && !ip.getAnnotated().getAnnotation(Property.class).value().isEmpty() ? ip.getAnnotated().getAnnotation(Property.class).value() : ip.getMember().getName();
+        if (ip.getAnnotated().isAnnotationPresent(Property.class) && !ip.getAnnotated().getAnnotation(Property.class).value().isEmpty()) {
+            return ip.getAnnotated().getAnnotation(Property.class).value();
+        }
+        if (ip.getMember() instanceof Field ) {
+            return ip.getMember().getName();
+        }
+        throw new IllegalStateException("This injection cannot be done because it is impossible to get the parameter name");
     }
 
     @PostConstruct
