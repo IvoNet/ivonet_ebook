@@ -16,7 +16,8 @@
 
 package nl.ivonet.ebook.controler;
 
-import nl.ivonet.cdi_properties.Property;
+
+import nl.ivonet.ebook.config.Property;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

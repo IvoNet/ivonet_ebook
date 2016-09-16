@@ -16,7 +16,7 @@
 
 package nl.ivonet.ebook.dao;
 
-import nl.ivonet.cdi_properties.Property;
+import nl.ivonet.ebook.config.Property;
 import nl.ivonet.ebook.io.ImageBase64;
 import nl.ivonet.ebook.model.Epub;
 import nl.ivonet.ebook.model.Folder;
