@@ -26,24 +26,25 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import java.io.File;
+import java.nio.file.Paths;
 
 /**
- *
  * @author Ivo Woltring
  */
 @Path("/download")
 @RequestScoped
 public class DownloadController {
-    @Inject @Property private String baseFolder;
+    private static final String APPLICATION_EPUB_ZIP = "application/epub+zip";
+    @Inject
+    @Property
+    private String baseFolder;
 
     @GET
     @Path("{path}")
-    @Produces("application/epub+zip")
+    @Produces(APPLICATION_EPUB_ZIP)
     public Response downloadEpub(@PathParam("path") final String path) {
-        final String pad = baseFolder + "/" + path.replace("+", "/");
-        final File file = new File(pad);
-        return Response.ok(file, "application/epub+zip")
+        return Response.ok(Paths.get(baseFolder, path)
+                                .toFile(), APPLICATION_EPUB_ZIP)
                        .build();
     }
 }

@@ -29,6 +29,10 @@ function CtrlEbooks($scope, $http, focus) {
       $scope.folder = data;
    });
 
+   $scope.createFileUri = function (filename) {
+      return ($scope.folder.fileUri + $scope.folder.folder.path
+              + "/" + filename).replace("#", "%23");
+   };
    /**
     * Handles browsing folder.
     * @param category
@@ -59,6 +63,29 @@ function CtrlEbooks($scope, $http, focus) {
          });
 
       }
+   };
+
+   $scope.browseFolder = function (folder) {
+      var url = $scope.data.browseUri;
+
+      if (folder === '/') {
+         url = $scope.data.baseUri;
+      } else if (folder === '..') {
+         var pth = $scope.data.folder.path.split("/");
+         pth.pop();
+         pth = pth.join('/');
+         if (pth === '') {
+            url = $scope.data.baseUri;
+         }
+         url += pth;
+      } else {
+         url += ($scope.data.folder.path + "/" + folder).replace("//", "/");
+      }
+
+      restService.get(url.replace("#", "%23")).success(function (data) {
+         $scope.data = data;
+      });
+      $scope.clearSearchBox()
    };
 
    $scope.toggleDebug = function () {

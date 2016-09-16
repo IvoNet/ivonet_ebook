@@ -57,7 +57,7 @@
                 <br/>
 
                 <div data-ng-repeat="epub in folder.epubs | orderBy:'filename'" id="images">
-                    <a href="service/download/{{folder.path}}+{{epub.filename}}" data-ng-click="clearFilter()"><img
+                    <a href="{{createFileUri(epub)}}" data-ng-click="clearFilter()"><img
                             alt="{{epub.filename}}"
                             height="200" width="100"
                             src="{{epub.cover}}"/></a>
