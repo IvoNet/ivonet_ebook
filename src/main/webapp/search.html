@@ -52,8 +52,9 @@
         watch: {
             searchQuery: function (newQuery) {
                 fetch("service/search/q/" + newQuery)
-                        .then(result => result.text())
-                        .then(text => this.results.push(text));
+                        .then(response => response.json())
+                        .then(result => result.map(book => book.title))
+                        .then(titles => this.results = titles);
             }
         }
     })

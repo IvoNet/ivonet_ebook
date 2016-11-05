@@ -7,6 +7,7 @@ import io.searchbox.client.JestResult;
 import io.searchbox.client.config.HttpClientConfig;
 import io.searchbox.core.Bulk;
 import io.searchbox.core.Index;
+import io.searchbox.core.Search;
 import io.searchbox.indices.CreateIndex;
 import io.searchbox.indices.aliases.AddAliasMapping;
 import io.searchbox.indices.aliases.AliasMapping;
@@ -53,6 +54,13 @@ public class SearchRepository {
         JestClientFactory factory = new JestClientFactory();
         factory.setHttpClientConfig(clientConfig);
         client = factory.getObject();
+    }
+
+    public List<SearchableBook> search(String query) {
+        return executeRequest(new Search.Builder("{\"query\": { \"bool\" : {\"must\" : {\"query_string\" : {\"query\" : \"" + query + "\"}}}}}")
+            .addIndex(INDEX).build())
+            .getHits(SearchableBook.class)
+            .stream().map(hit -> hit.source).collect(toList());
     }
 
     public URI recreateIndex() throws URISyntaxException, IOException {
