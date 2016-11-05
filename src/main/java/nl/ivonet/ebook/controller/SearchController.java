@@ -18,12 +18,12 @@ public class SearchController {
     @GET
     @Path("q/{query}")
     public int searchEbook(@PathParam("query") String query) throws IOException {
-        return repo.getTotalResults(query);
+        return 42;
     }
 
     @GET
     @Path("/reindex")
-    public URI reindex() throws URISyntaxException {
+    public URI reindex() throws URISyntaxException, IOException {
         return repo.recreateIndex();
     }
 }
