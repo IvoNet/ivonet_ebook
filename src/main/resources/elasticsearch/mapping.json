@@ -1,0 +1,9 @@
+{
+  "properties": {
+    "title": {
+      "type": "string",
+      "analyzer": "autocomplete",
+      "search_analyzer": "autocomplete_search"
+    }
+  }
+}

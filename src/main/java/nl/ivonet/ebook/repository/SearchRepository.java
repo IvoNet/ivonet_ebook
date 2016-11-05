@@ -17,10 +17,12 @@ import io.searchbox.indices.aliases.RemoveAliasMapping;
 import io.searchbox.indices.mapping.PutMapping;
 import io.searchbox.params.Parameters;
 import nl.ivonet.ebook.config.Property;
+import nl.ivonet.ebook.controller.SearchController;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -28,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -69,33 +72,9 @@ public class SearchRepository {
     public URI recreateIndex() throws URISyntaxException, IOException {
         String newIndex = format("books-%s", now().format(ofPattern("yyyy-MM-dd-HH-mm-ss")));
 
-        executeRequest(new CreateIndex.Builder(newIndex).settings("{" +
-            "    \"analysis\": {" +
-            "      \"analyzer\": {" +
-            "        \"autocomplete\": {" +
-            "          \"tokenizer\": \"autocomplete\"," +
-            "          \"filter\": [" +
-            "            \"lowercase\"" +
-            "          ]" +
-            "        }," +
-            "        \"autocomplete_search\": {" +
-            "          \"tokenizer\": \"lowercase\"" +
-            "        }" +
-            "      }," +
-            "      \"tokenizer\": {" +
-            "        \"autocomplete\": {" +
-            "          \"type\": \"edge_ngram\"," +
-            "          \"min_gram\": 2," +
-            "          \"max_gram\": 10," +
-            "          \"token_chars\": [" +
-            "            \"letter\"" +
-            "          ]" +
-            "        }" +
-            "      }" +
-            "    }" +
-            "  }").build());
+        executeRequest(new CreateIndex.Builder(newIndex).settings(fileToString("/elasticsearch/settings.json")).build());
 
-        executeRequest(new PutMapping.Builder(newIndex, INDEX, "{\"properties\": {\"title\": {\"type\": \"string\", \"analyzer\": \"autocomplete\", \"search_analyzer\": \"autocomplete_search\"}}}").build());
+        executeRequest(new PutMapping.Builder(newIndex, INDEX, fileToString("/elasticsearch/mapping.json")).build());
 
         List<Index> addActions = Files.walk(Paths.get(baseFolder))
             .filter(Files::isRegularFile)
@@ -126,6 +105,12 @@ public class SearchRepository {
             .build());
 
         return new URI(elasticsearchUrl + "/" + newIndex);
+    }
+
+    private String fileToString(String filePath) {
+        InputStream resourceAsStream = SearchController.class.getResourceAsStream(filePath);
+        Scanner s = new Scanner(resourceAsStream).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
     }
 
     private <T extends JestResult> T executeRequest(Action<T> request) {
