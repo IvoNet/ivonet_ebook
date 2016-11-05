@@ -14,6 +14,8 @@ import io.searchbox.indices.aliases.AliasMapping;
 import io.searchbox.indices.aliases.GetAliases;
 import io.searchbox.indices.aliases.ModifyAliases;
 import io.searchbox.indices.aliases.RemoveAliasMapping;
+import io.searchbox.indices.mapping.PutMapping;
+import io.searchbox.params.Parameters;
 import nl.ivonet.ebook.config.Property;
 
 import javax.inject.Inject;
@@ -57,7 +59,8 @@ public class SearchRepository {
     }
 
     public List<SearchableBook> search(String query) {
-        return executeRequest(new Search.Builder("{\"query\": { \"bool\" : {\"must\" : {\"query_string\" : {\"query\" : \"" + query + "\"}}}}}")
+        return executeRequest(new Search.Builder("{ \"query\": { \"match\": { \"title\": { \"query\": \"" + query + "\",  \"operator\": \"and\" }}}}")
+            .setParameter(Parameters.SIZE, 100)
             .addIndex(INDEX).build())
             .getHits(SearchableBook.class)
             .stream().map(hit -> hit.source).collect(toList());
@@ -66,7 +69,33 @@ public class SearchRepository {
     public URI recreateIndex() throws URISyntaxException, IOException {
         String newIndex = format("books-%s", now().format(ofPattern("yyyy-MM-dd-HH-mm-ss")));
 
-        executeRequest(new CreateIndex.Builder(newIndex).build());
+        executeRequest(new CreateIndex.Builder(newIndex).settings("{" +
+            "    \"analysis\": {" +
+            "      \"analyzer\": {" +
+            "        \"autocomplete\": {" +
+            "          \"tokenizer\": \"autocomplete\"," +
+            "          \"filter\": [" +
+            "            \"lowercase\"" +
+            "          ]" +
+            "        }," +
+            "        \"autocomplete_search\": {" +
+            "          \"tokenizer\": \"lowercase\"" +
+            "        }" +
+            "      }," +
+            "      \"tokenizer\": {" +
+            "        \"autocomplete\": {" +
+            "          \"type\": \"edge_ngram\"," +
+            "          \"min_gram\": 2," +
+            "          \"max_gram\": 10," +
+            "          \"token_chars\": [" +
+            "            \"letter\"" +
+            "          ]" +
+            "        }" +
+            "      }" +
+            "    }" +
+            "  }").build());
+
+        executeRequest(new PutMapping.Builder(newIndex, INDEX, "{\"properties\": {\"title\": {\"type\": \"string\", \"analyzer\": \"autocomplete\", \"search_analyzer\": \"autocomplete_search\"}}}").build());
 
         List<Index> addActions = Files.walk(Paths.get(baseFolder))
             .filter(Files::isRegularFile)
