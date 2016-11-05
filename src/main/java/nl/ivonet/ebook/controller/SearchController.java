@@ -1,4 +1,4 @@
-package nl.ivonet.ebook.controler;
+package nl.ivonet.ebook.controller;
 
 import nl.ivonet.ebook.repository.SearchRepository;
 
