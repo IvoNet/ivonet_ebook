@@ -8,6 +8,11 @@ import io.searchbox.client.config.HttpClientConfig;
 import io.searchbox.core.Bulk;
 import io.searchbox.core.Index;
 import io.searchbox.indices.CreateIndex;
+import io.searchbox.indices.aliases.AddAliasMapping;
+import io.searchbox.indices.aliases.AliasMapping;
+import io.searchbox.indices.aliases.GetAliases;
+import io.searchbox.indices.aliases.ModifyAliases;
+import io.searchbox.indices.aliases.RemoveAliasMapping;
 import nl.ivonet.ebook.config.Property;
 
 import javax.inject.Inject;
@@ -18,13 +23,14 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
+import static java.time.LocalDateTime.now;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.toList;
 
 public class SearchRepository {
@@ -50,7 +56,7 @@ public class SearchRepository {
     }
 
     public URI recreateIndex() throws URISyntaxException, IOException {
-        String newIndex = format("books-%s", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm")));
+        String newIndex = format("books-%s", now().format(ofPattern("yyyy-MM-dd-HH-mm-ss")));
 
         executeRequest(new CreateIndex.Builder(newIndex).build());
 
@@ -70,6 +76,17 @@ public class SearchRepository {
                     .defaultType(INDEX)
                     .addAction(searchableBookBatch).build())
         );
+
+        List<AliasMapping> collect = executeRequest(new GetAliases.Builder().build())
+            .getJsonObject().entrySet().stream()
+            .filter(entry -> entry.getValue().toString().contains(INDEX))
+            .map(Map.Entry::getKey)
+            .map(key -> new RemoveAliasMapping.Builder(key, INDEX).build())
+            .collect(toList());
+
+        executeRequest(new ModifyAliases.Builder(new AddAliasMapping.Builder(newIndex, INDEX).build())
+            .addAlias(collect)
+            .build());
 
         return new URI(elasticsearchUrl + "/" + newIndex);
     }
