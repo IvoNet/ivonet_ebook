@@ -36,7 +36,9 @@
 
     <ul class="list-group">
         <li v-for="result in results" class="list-group-item">
-            {{result}}
+            <a v-bind:href="'service/download/' + result.path">
+            {{result.title}}
+            </a>
         </li>
     </ul>
 </div>
@@ -53,8 +55,7 @@
             searchQuery: function (newQuery) {
                 fetch("service/search/q/" + newQuery)
                         .then(response => response.json())
-                        .then(result => result.map(book => book.title))
-                        .then(titles => this.results = titles);
+                        .then(results => this.results = results);
             }
         }
     })

@@ -20,7 +20,6 @@ import nl.ivonet.ebook.config.Property;
 import nl.ivonet.ebook.controller.SearchController;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -80,7 +79,6 @@ public class SearchRepository {
             .filter(Files::isRegularFile)
             .filter(path -> path.toString().endsWith(EPUB))
             .map(Path::toFile)
-            .map(File::getName)
             .map(SearchableBook::new)
             .map(searchableBook -> new Index.Builder(searchableBook).build())
             .collect(toList());
