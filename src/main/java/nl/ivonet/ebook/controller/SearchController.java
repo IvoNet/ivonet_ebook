@@ -1,7 +1,6 @@
 package nl.ivonet.ebook.controller;
 
 import nl.ivonet.ebook.repository.SearchRepository;
-import nl.ivonet.ebook.repository.SearchableBook;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -12,7 +11,6 @@ import javax.ws.rs.Produces;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -25,8 +23,8 @@ public class SearchController {
     @GET
     @Path("q/{query}")
     @Produces(APPLICATION_JSON)
-    public List<SearchableBook> searchEbook(@PathParam("query") String query) throws IOException {
-        return repo.search(query);
+    public Object[] searchEbook(@PathParam("query") String query) throws IOException {
+        return repo.search(query).toJavaArray();
     }
 
     @GET
