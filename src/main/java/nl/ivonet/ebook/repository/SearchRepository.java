@@ -17,8 +17,12 @@ import javaslang.collection.HashSet;
 import javaslang.collection.List;
 import nl.ivonet.ebook.config.Property;
 import nl.ivonet.ebook.controller.SearchController;
+import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.epub.EpubReader;
 
 import javax.inject.Inject;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -33,21 +37,23 @@ import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.toList;
+import static javaslang.Tuple.of;
 
 public class SearchRepository {
 
     private static final String INDEX = "books";
     private static final String EPUB = ".epub";
     private static final int WINDOW_SIZE = 1000;
-    private String elasticsearchUrl;
-    private String baseFolder;
-
-    private JestClient client;
+    private final String elasticsearchUrl;
+    private final String baseFolder;
+    private final JestClient client;
+    private final EpubReader epubReader;
 
     @Inject
-    public SearchRepository(@Property("elasticsearchUrl") String elasticsearchUrl, @Property("baseFolder") String baseFolder) {
+    public SearchRepository(@Property("elasticsearchUrl") String elasticsearchUrl, @Property("baseFolder") String baseFolder, EpubReader epubReader) {
         this.elasticsearchUrl = elasticsearchUrl;
         this.baseFolder = baseFolder;
+        this.epubReader = epubReader;
 
         HttpClientConfig clientConfig = new HttpClientConfig.Builder(elasticsearchUrl)
             .multiThreaded(true).build();
@@ -58,7 +64,7 @@ public class SearchRepository {
 
     public List<SearchableBook> search(String query) {
         return List.ofAll(
-            executeRequest(new Search.Builder("{ \"query\": { \"match\": { \"title\": { \"query\": \"" + query + "\",  \"operator\": \"and\" }}}}")
+            executeRequest(new Search.Builder(format("{ \"query\": { \"query_string\": { \"query\": \"%s\" } } }", query))
                 .setParameter(Parameters.SIZE, 100)
                 .addIndex(INDEX).build())
                 .getHits(SearchableBook.class)
@@ -72,12 +78,15 @@ public class SearchRepository {
         executeRequest(new CreateIndex.Builder(newIndex).settings(fileToString("/elasticsearch/settings.json")).build());
         executeRequest(new PutMapping.Builder(newIndex, INDEX, fileToString("/elasticsearch/mapping.json")).build());
 
-        getAllFilesFromFolder()
-            .filter(Files::isRegularFile)
-            .filter(path -> path.toString().endsWith(EPUB))
-            .map(Path::toFile)
-            .map(SearchableBook::new)
-            .map(searchableBook -> new Index.Builder(searchableBook).build())
+        List.ofAll(
+            Files.walk(Paths.get(baseFolder))
+                .filter(Files::isRegularFile)
+                .filter(path -> path.toString().endsWith(EPUB))
+                .map(Path::toFile)
+                .map(file -> of(file, parseEpub(file)))
+                .map(SearchableBook::new)
+                .map(searchableBook -> new Index.Builder(searchableBook).build())
+                .collect(toList()))
             .sliding(WINDOW_SIZE)
             .forEach(indices ->
                 executeRequest(
@@ -104,14 +113,18 @@ public class SearchRepository {
         return HashSet.ofAll(executeRequest(new GetAliases.Builder().build()).getJsonObject().entrySet());
     }
 
-    private List<Path> getAllFilesFromFolder() throws IOException {
-        return List.ofAll(Files.walk(Paths.get(baseFolder)).collect(toList()));
-    }
-
     private String fileToString(String filePath) {
         InputStream resourceAsStream = SearchController.class.getResourceAsStream(filePath);
         Scanner s = new Scanner(resourceAsStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
+    }
+
+    private Book parseEpub(File file) {
+        try {
+            return epubReader.readEpub(new FileInputStream(file.getAbsolutePath()));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("This is not a valid file to parse");
+        }
     }
 
     private <T extends JestResult> T executeRequest(Action<T> request) {

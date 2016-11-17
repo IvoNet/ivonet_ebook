@@ -1,26 +1,45 @@
 package nl.ivonet.ebook.repository;
 
+import javaslang.Tuple2;
+import nl.siegmann.epublib.domain.Author;
+import nl.siegmann.epublib.domain.Book;
+
 import java.io.File;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SearchableBook {
+import static java.util.stream.Collectors.toList;
+
+class SearchableBook {
 
     private static final Pattern EPUB_MATCHER = Pattern.compile("\\/[^/]*\\/[^/]*\\/[^/]*\\/[^/]*\\.epub");
-    private String title;
     private String path;
+    private String title;
+    private String description;
+    private final List<String> authors;
 
-    SearchableBook(File file) {
-        this.path = retrieveCorrectPath(file.getAbsolutePath());
-        this.title = file.getName();
+    SearchableBook(Tuple2<File, Book> pair) {
+        this.path = retrieveCorrectPath(pair._1.getAbsolutePath());
+        this.title = pair._2.getTitle();
+        this.authors = pair._2.getMetadata().getAuthors().stream().map(Author::toString).collect(toList());
+        this.description = pair._2.getMetadata().getDescriptions().stream().findFirst().orElse("");
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getPath() {
-        return path;
+    public String getDescription() {
+        return description;
+    }
+
+    public List<String> getAuthors() {
+        return authors;
     }
 
     private String retrieveCorrectPath(String absolutePath) {
