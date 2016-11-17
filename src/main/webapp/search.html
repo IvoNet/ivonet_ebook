@@ -30,7 +30,8 @@
            placeholder="Just type away ..."
            class="form-control middle"
            v-model="searchQuery"
-           v-on:focus="isActive = true"
+           ref="searchInput"
+           v-on:input="isActive = true"
            v-bind:class="{ active: isActive }"
     />
 
@@ -50,6 +51,9 @@
             searchQuery: '',
             results: [],
             isActive: false
+        },
+        mounted () {
+            this.$refs.searchInput.focus();
         },
         watch: {
             searchQuery: function (newQuery) {
