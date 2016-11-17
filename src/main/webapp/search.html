@@ -40,6 +40,10 @@
             <a v-bind:href="'service/download/' + result.path">
             {{result.title}}
             </a>
+
+            <span class="badge" v-for="author in result.authors">
+                {{author}}
+            </span>
         </li>
     </ul>
 </div>
