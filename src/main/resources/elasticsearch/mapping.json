@@ -1,13 +1,15 @@
 {
+  "_all": {
+    "analyzer": "autocomplete",
+    "search_analyzer": "autocomplete_search"
+  },
   "properties": {
     "title": {
       "type": "string",
-      "analyzer": "autocomplete",
-      "search_analyzer": "autocomplete_search",
       "boost": 3
     },
-    "authors" : {
-      "type" : "string"
+    "authors": {
+      "type": "string"
     },
     "description": {
       "type": "string",
