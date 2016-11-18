@@ -18,6 +18,11 @@
         .list-group {
             margin-top: 20px;
         }
+        .overflow-div {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -44,6 +49,9 @@
             <span class="badge" v-for="author in result.authors">
                 {{author}}
             </span>
+            <div class="overflow-div">
+                {{result.description}}
+            </div>
         </li>
     </ul>
 </div>
