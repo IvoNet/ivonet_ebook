@@ -11,13 +11,16 @@
         .active {
             margin-top: 20px !important;
         }
+
         .middle {
             margin-top: 300px;
             transition: margin-top 0.5s;
         }
+
         .list-group {
             margin-top: 20px;
         }
+
         .overflow-div {
             text-overflow: ellipsis;
             overflow: hidden;
@@ -43,7 +46,7 @@
     <ul class="list-group">
         <li v-for="result in results" class="list-group-item">
             <a v-bind:href="'service/download/' + result.path">
-            {{result.title}}
+                {{result.title}}
             </a>
 
             <span class="badge" v-for="author in result.authors">
@@ -69,7 +72,7 @@
         },
         watch: {
             searchQuery: function (newQuery) {
-                fetch("service/search/q/" + newQuery)
+                newQuery && newQuery.trim() !== "" && fetch("service/search/q/" + newQuery)
                         .then(response => response.json())
                         .then(results => this.results = results);
             }
