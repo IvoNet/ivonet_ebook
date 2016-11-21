@@ -87,7 +87,7 @@ public class SearchRepository {
                 .map(SearchableBook::new)
                 .map(searchableBook -> new Index.Builder(searchableBook).build())
                 .collect(toList()))
-            .sliding(WINDOW_SIZE)
+            .sliding(WINDOW_SIZE, WINDOW_SIZE)
             .forEach(indices ->
                 executeRequest(
                     new Bulk.Builder()
