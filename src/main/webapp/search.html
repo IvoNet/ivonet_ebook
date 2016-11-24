@@ -26,6 +26,11 @@
             overflow: hidden;
             white-space: nowrap;
         }
+
+        .cover-art {
+            max-height: 100px;
+            max-width: 100px;
+        }
     </style>
 </head>
 <body>
@@ -46,13 +51,13 @@
 
     <ul class="list-group">
         <li v-for="result in results" class="list-group-item">
+            <img v-bind:src="result.image" class="cover-art">
             <a v-bind:href="'service/download/' + result.path">
                 {{result.title}}
             </a>
-
             <span class="badge" v-for="author in result.authors">
                 {{author}}
-            </span>
+                </span>
             <div class="overflow-div">
                 {{result.description}}
             </div>
@@ -74,8 +79,8 @@
         watch: {
             searchQuery: function (newQuery) {
                 newQuery && newQuery.trim() !== "" && fetch("service/search/q/" + newQuery)
-                        .then(response => response.json())
-                        .then(results => this.results = results);
+                    .then(response => response.json())
+                    .then(results => this.results = results);
             }
         }
     })

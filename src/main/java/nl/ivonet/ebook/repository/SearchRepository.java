@@ -80,6 +80,7 @@ public class SearchRepository {
 
         List.ofAll(
             Files.walk(Paths.get(baseFolder))
+                .limit(500)
                 .filter(Files::isRegularFile)
                 .filter(path -> path.toString().endsWith(EPUB))
                 .map(Path::toFile)
